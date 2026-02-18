@@ -1,0 +1,47 @@
+services:
+  tasktrackingsystem.api:
+    image: ${DOCKER_REGISTRY-}tasktrackingsystemapi
+    build:
+      context: .
+      dockerfile: TaskTrackingSystem.API/Dockerfile
+    ports:
+      - "5080:8080"
+      - "5081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=tasktrackingsystem.sqlserver;Database=TaskTrackingDb;User Id=sa;Password=YourStrong!Passw0rd2024;TrustServerCertificate=true;
+      - ConnectionStrings__Redis=tasktrackingsystem.redis:6379
+    depends_on:
+      - tasktrackingsystem.sqlserver
+      - tasktrackingsystem.redis
+    networks:
+      - tasktracking-network
+
+  tasktrackingsystem.sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong!Passw0rd2024
+    ports:
+      - "1437:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - tasktracking-network
+
+  tasktrackingsystem.redis:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - tasktracking-network
+
+networks:
+  tasktracking-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
+  redis-data:
