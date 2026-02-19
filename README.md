@@ -1,4 +1,4 @@
-# Team Sprint Planning Board API
+# Task Tracking API
 
 Backend API for an agile sprint planning board — manage teams, sprints, and tasks with role-based access control.
 
