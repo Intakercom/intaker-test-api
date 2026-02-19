@@ -66,16 +66,7 @@ This starts 3 containers on a shared `tasktracking-network` bridge network:
 
 Services communicate internally via hostnames (e.g., the API connects to `tasktrackingsystem.sqlserver:1433`).
 
-**2. Apply database migrations** (run from repo root, while containers are up):
-
-```bash
-dotnet ef database update \
-  --project TaskTrackingSystem.Infrastructure \
-  --startup-project TaskTrackingSystem.API \
-  --connection "Server=localhost,1437;Database=TaskTrackingDb;User Id=sa;Password=YourStrong!Passw0rd2024;TrustServerCertificate=true;"
-```
-
-**3. Open Swagger UI:**
+**2. Open Swagger UI:**
 
 ```
 http://localhost:5080/swagger
@@ -100,7 +91,7 @@ docker-compose -p intaker-test up down -v
 Run the API directly on your machine with local SQL Server and Redis.
 
 **1. Verify prerequisites are running:**
-- SQL Server on `localhost` (Windows Authentication)
+- SQL Server on `localhost`
 - Redis on `localhost:6379`
 
 **2. Update connection strings** (if needed) in `TaskTrackingSystem.API/appsettings.json`:
@@ -114,21 +105,13 @@ Run the API directly on your machine with local SQL Server and Redis.
 }
 ```
 
-**3. Apply database migrations:**
-
-```bash
-dotnet ef database update \
-  --project TaskTrackingSystem.Infrastructure \
-  --startup-project TaskTrackingSystem.API
-```
-
-**4. Run the API:**
+**3. Run the API:**
 
 ```bash
 dotnet run --project TaskTrackingSystem.API
 ```
 
-**5. Open Swagger UI** at the URL shown in the console output (e.g., `https://localhost:7xxx/swagger`).
+**4. Open Swagger UI** at the URL shown in the console output (e.g., `https://localhost:7xxx/swagger`).
 
 ## Authentication
 

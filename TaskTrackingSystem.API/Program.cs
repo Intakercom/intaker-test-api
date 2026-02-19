@@ -1,8 +1,10 @@
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TaskTrackingSystem.API.Middleware;
 using TaskTrackingSystem.Application;
 using TaskTrackingSystem.Infrastructure;
+using TaskTrackingSystem.Infrastructure.Persistence;
 
 namespace TaskTrackingSystem.API;
 
@@ -109,6 +111,13 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+
+        // Auto-migrate database (applies pending migrations + seed data)
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            db.Database.Migrate();
+        }
 
         app.Run();
     }
