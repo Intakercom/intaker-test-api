@@ -117,6 +117,11 @@ dotnet run --project TaskTrackingSystem.API
 
 The API uses JWT Bearer tokens. Two roles exist: **Admin** and **Member**.
 
+**Existing admin user (created during seeding phase):**
+
+**Email**: _admin@example.com_  
+**Password**: _pass1234_
+
 ### Quick Start Flow
 
 **1. Register a user:**
