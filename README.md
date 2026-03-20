@@ -53,7 +53,7 @@ Everything runs in containers — no local SQL Server or Redis needed.
 **1. Start all services:**
 
 ```bash
-docker-compose -p intaker-test up --build -d
+docker-compose -p intaker-test-api up --build -d
 ```
 
 This starts 3 containers on a shared `tasktracking-network` bridge network:
