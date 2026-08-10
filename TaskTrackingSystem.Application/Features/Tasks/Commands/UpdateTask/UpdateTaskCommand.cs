@@ -3,4 +3,4 @@ using TaskTrackingSystem.Application.Features.Tasks.DTOs;
 
 namespace TaskTrackingSystem.Application.Features.Tasks.Commands.UpdateTask;
 
-public record UpdateTaskCommand(Guid Id, string Title, string? Description, Guid? AssigneeId) : IRequest<TaskDto>;
+public record UpdateTaskCommand(Guid Id, string Title, string? Description, int? StoryPoints, Guid? AssigneeId) : IRequest<TaskDto>;

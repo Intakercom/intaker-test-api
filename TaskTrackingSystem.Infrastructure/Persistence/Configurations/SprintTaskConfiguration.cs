@@ -17,6 +17,13 @@ public class SprintTaskConfiguration : IEntityTypeConfiguration<SprintTask>
         builder.Property(t => t.Description)
             .HasMaxLength(2000);
 
+        builder.Property(t => t.StoryPoints)
+            .IsRequired(false);
+
+        builder.ToTable(t => t.HasCheckConstraint(
+            "CK_SprintTask_StoryPoints",
+            "[StoryPoints] IS NULL OR ([StoryPoints] >= 1 AND [StoryPoints] <= 5)"));
+
         builder.Property(t => t.Status)
             .HasConversion<string>()
             .HasMaxLength(20);

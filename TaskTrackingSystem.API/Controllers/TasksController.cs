@@ -42,6 +42,7 @@ public class TasksController : ControllerBase
     ///     {
     ///         "title": "Implement login page",
     ///         "description": "Build the login form with email/password fields",
+    ///         "storyPoints": 3,
     ///         "assigneeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     ///         "sprintId": "7c9e6679-7425-40de-944b-e07fc1f90ae7"
     ///     }
@@ -91,7 +92,7 @@ public class TasksController : ControllerBase
     /// Update an existing task's details.
     /// </summary>
     /// <remarks>
-    /// Updates the title, description, and/or assignee of a task.
+    /// Updates the title, description, story points, and/or assignee of a task.
     /// This does **not** change the task's status — use `PATCH /api/tasks/{id}/status` for that.
     ///
     /// Sample request:
@@ -100,6 +101,7 @@ public class TasksController : ControllerBase
     ///     {
     ///         "title": "Implement login page (updated)",
     ///         "description": "Include forgot password link",
+    ///         "storyPoints": 3,
     ///         "assigneeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     ///     }
     ///
@@ -119,7 +121,7 @@ public class TasksController : ControllerBase
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(Guid id, UpdateTaskRequest request, CancellationToken cancellationToken)
     {
-        var command = new UpdateTaskCommand(id, request.Title, request.Description, request.AssigneeId);
+        var command = new UpdateTaskCommand(id, request.Title, request.Description, request.StoryPoints, request.AssigneeId);
         var result = await _sender.Send(command, cancellationToken);
         return Ok(result);
     }
@@ -185,12 +187,13 @@ public class TasksController : ControllerBase
 }
 
 /// <summary>
-/// Request body for updating task details (title, description, assignee).
+/// Request body for updating task details (title, description, story points, assignee).
 /// </summary>
 /// <param name="Title">The updated task title.</param>
 /// <param name="Description">The updated task description (optional).</param>
+/// <param name="StoryPoints">The story point estimate (1-5, or null for unassigned).</param>
 /// <param name="AssigneeId">The user ID to assign the task to (optional, null to unassign).</param>
-public record UpdateTaskRequest(string Title, string? Description, Guid? AssigneeId);
+public record UpdateTaskRequest(string Title, string? Description, int? StoryPoints, Guid? AssigneeId);
 
 /// <summary>
 /// Request body for updating a task's status (board column).

@@ -4,6 +4,7 @@ public record TaskDto(
     Guid Id,
     string Title,
     string? Description,
+    int? StoryPoints,
     string Status,
     Guid? AssigneeId,
     string? AssigneeName,

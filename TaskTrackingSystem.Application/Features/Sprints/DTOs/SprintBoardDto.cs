@@ -5,10 +5,13 @@ public record SprintBoardDto(
     string SprintName,
     IReadOnlyList<BoardTaskDto> ToDo,
     IReadOnlyList<BoardTaskDto> InProgress,
-    IReadOnlyList<BoardTaskDto> Done);
+    IReadOnlyList<BoardTaskDto> Done,
+    int TotalStoryPoints,
+    int CompletedStoryPoints);
 
 public record BoardTaskDto(
     Guid Id,
     string Title,
+    int? StoryPoints,
     Guid? AssigneeId,
     string? AssigneeName);

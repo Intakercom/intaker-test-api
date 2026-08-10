@@ -41,6 +41,7 @@ public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskD
             Id = Guid.NewGuid(),
             Title = request.Title,
             Description = request.Description,
+            StoryPoints = request.StoryPoints,
             Status = SprintTaskStatus.ToDo,
             AssigneeId = request.AssigneeId,
             SprintId = request.SprintId,
@@ -53,7 +54,7 @@ public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskD
         await _cacheService.RemoveAsync(CacheKeys.SprintsByTeam(sprint.TeamId), cancellationToken);
 
         return new TaskDto(
-            task.Id, task.Title, task.Description, task.Status.ToString(),
+            task.Id, task.Title, task.Description, task.StoryPoints, task.Status.ToString(),
             task.AssigneeId, null, task.SprintId, task.CreatedByUserId,
             task.CreatedAtUtc, task.UpdatedAtUtc);
     }

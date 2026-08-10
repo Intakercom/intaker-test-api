@@ -7,6 +7,7 @@ public class SprintTask : BaseEntity
 {
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }
+    public int? StoryPoints { get; set; }
     public SprintTaskStatus Status { get; set; } = SprintTaskStatus.ToDo;
 
     public Guid? AssigneeId { get; set; }

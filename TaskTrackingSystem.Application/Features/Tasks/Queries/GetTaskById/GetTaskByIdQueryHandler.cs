@@ -20,7 +20,7 @@ public class GetTaskByIdQueryHandler : IRequestHandler<GetTaskByIdQuery, TaskDto
             ?? throw new NotFoundException(nameof(Domain.Entities.SprintTask), request.Id);
 
         return new TaskDto(
-            task.Id, task.Title, task.Description, task.Status.ToString(),
+            task.Id, task.Title, task.Description, task.StoryPoints, task.Status.ToString(),
             task.AssigneeId, task.Assignee is not null ? $"{task.Assignee.FirstName} {task.Assignee.LastName}" : null,
             task.SprintId, task.CreatedByUserId,
             task.CreatedAtUtc, task.UpdatedAtUtc);

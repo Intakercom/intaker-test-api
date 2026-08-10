@@ -25,14 +25,20 @@ public class GetSprintBoardQueryHandler : IRequestHandler<GetSprintBoardQuery, S
         BoardTaskDto MapTask(Domain.Entities.SprintTask t) => new(
             t.Id,
             t.Title,
+            t.StoryPoints,
             t.AssigneeId,
             t.Assignee is not null ? $"{t.Assignee.FirstName} {t.Assignee.LastName}" : null);
+
+        var totalStoryPoints = tasks.Where(t => t.StoryPoints.HasValue).Sum(t => t.StoryPoints!.Value);
+        var completedStoryPoints = tasks.Where(t => t.Status == SprintTaskStatus.Done && t.StoryPoints.HasValue).Sum(t => t.StoryPoints!.Value);
 
         return new SprintBoardDto(
             sprint.Id,
             sprint.Name,
             ToDo: tasks.Where(t => t.Status == SprintTaskStatus.ToDo).Select(MapTask).ToList().AsReadOnly(),
             InProgress: tasks.Where(t => t.Status == SprintTaskStatus.InProgress).Select(MapTask).ToList().AsReadOnly(),
-            Done: tasks.Where(t => t.Status == SprintTaskStatus.Done).Select(MapTask).ToList().AsReadOnly());
+            Done: tasks.Where(t => t.Status == SprintTaskStatus.Done).Select(MapTask).ToList().AsReadOnly(),
+            totalStoryPoints,
+            completedStoryPoints);
     }
 }

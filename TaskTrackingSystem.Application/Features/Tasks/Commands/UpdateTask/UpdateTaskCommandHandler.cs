@@ -23,13 +23,14 @@ public class UpdateTaskCommandHandler : IRequestHandler<UpdateTaskCommand, TaskD
 
         task.Title = request.Title;
         task.Description = request.Description;
+        task.StoryPoints = request.StoryPoints;
         task.AssigneeId = request.AssigneeId;
 
         _taskRepository.Update(task);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return new TaskDto(
-            task.Id, task.Title, task.Description, task.Status.ToString(),
+            task.Id, task.Title, task.Description, task.StoryPoints, task.Status.ToString(),
             task.AssigneeId, null, task.SprintId, task.CreatedByUserId,
             task.CreatedAtUtc, task.UpdatedAtUtc);
     }
