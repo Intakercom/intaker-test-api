@@ -11,6 +11,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Team> Teams => Set<Team>();
     public DbSet<Sprint> Sprints => Set<Sprint>();
     public DbSet<SprintTask> SprintTasks => Set<SprintTask>();
+    public DbSet<TaskHistory> TaskHistories => Set<TaskHistory>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

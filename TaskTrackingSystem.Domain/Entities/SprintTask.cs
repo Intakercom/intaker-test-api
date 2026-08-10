@@ -18,4 +18,6 @@ public class SprintTask : BaseEntity
 
     public Guid CreatedByUserId { get; set; }
     public User CreatedByUser { get; set; } = null!;
+
+    public ICollection<TaskHistory> History { get; set; } = new List<TaskHistory>();
 }

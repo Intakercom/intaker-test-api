@@ -13,6 +13,7 @@ public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskD
 {
     private readonly ISprintTaskRepository _taskRepository;
     private readonly ISprintRepository _sprintRepository;
+    private readonly ITaskHistoryRepository _taskHistoryRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ICurrentUserService _currentUserService;
     private readonly ICacheService _cacheService;
@@ -20,12 +21,14 @@ public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskD
     public CreateTaskCommandHandler(
         ISprintTaskRepository taskRepository,
         ISprintRepository sprintRepository,
+        ITaskHistoryRepository taskHistoryRepository,
         IUnitOfWork unitOfWork,
         ICurrentUserService currentUserService,
         ICacheService cacheService)
     {
         _taskRepository = taskRepository;
         _sprintRepository = sprintRepository;
+        _taskHistoryRepository = taskHistoryRepository;
         _unitOfWork = unitOfWork;
         _currentUserService = currentUserService;
         _cacheService = cacheService;
@@ -49,6 +52,18 @@ public class CreateTaskCommandHandler : IRequestHandler<CreateTaskCommand, TaskD
         };
 
         await _taskRepository.AddAsync(task, cancellationToken);
+
+        // Add task creation history
+        var history = new TaskHistory
+        {
+            Id = Guid.NewGuid(),
+            TaskId = task.Id,
+            UserId = _currentUserService.UserId,
+            ChangeType = TaskChangeType.Created,
+            CreatedAtUtc = DateTime.UtcNow
+        };
+        await _taskHistoryRepository.AddAsync(history, cancellationToken);
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         await _cacheService.RemoveAsync(CacheKeys.SprintsByTeam(sprint.TeamId), cancellationToken);

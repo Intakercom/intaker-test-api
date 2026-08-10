@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<ITeamRepository, TeamRepository>();
         services.AddScoped<ISprintRepository, SprintRepository>();
         services.AddScoped<ISprintTaskRepository, SprintTaskRepository>();
+        services.AddScoped<ITaskHistoryRepository, TaskHistoryRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         // Redis

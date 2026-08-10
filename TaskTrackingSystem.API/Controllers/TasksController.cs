@@ -8,6 +8,7 @@ using TaskTrackingSystem.Application.Features.Tasks.Commands.UpdateTask;
 using TaskTrackingSystem.Application.Features.Tasks.Commands.UpdateTaskStatus;
 using TaskTrackingSystem.Application.Features.Tasks.DTOs;
 using TaskTrackingSystem.Application.Features.Tasks.Queries.GetTaskById;
+using TaskTrackingSystem.Application.Features.Tasks.Queries.GetTaskHistory;
 using TaskTrackingSystem.Domain.Enums;
 
 namespace TaskTrackingSystem.API.Controllers;
@@ -85,6 +86,27 @@ public class TasksController : ControllerBase
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await _sender.Send(new GetTaskByIdQuery(id), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Get the complete history of changes for a task.
+    /// </summary>
+    /// <remarks>
+    /// Returns all historical changes made to a task, including creation, status changes, and field updates.
+    /// Changes are returned in reverse chronological order (most recent first).
+    /// </remarks>
+    /// <param name="id">The unique identifier of the task.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>List of historical changes.</returns>
+    /// <response code="200">Returns the task history.</response>
+    /// <response code="401">User is not authenticated.</response>
+    [HttpGet("{id:guid}/history")]
+    [ProducesResponseType(typeof(IReadOnlyList<TaskHistoryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> GetHistory(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(new GetTaskHistoryQuery(id), cancellationToken);
         return Ok(result);
     }
 
