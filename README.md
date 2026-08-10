@@ -75,13 +75,13 @@ http://localhost:5080/swagger
 **Stop services:**
 
 ```bash
-docker-compose -p intaker-test up down
+docker-compose -p intaker-test-api down
 ```
 
 To also remove persisted data (database + cache):
 
 ```bash
-docker-compose -p intaker-test up down -v
+docker-compose -p intaker-test-api down -v
 ```
 
 ---
